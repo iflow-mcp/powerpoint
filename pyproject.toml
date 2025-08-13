@@ -21,3 +21,6 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 powerpoint = "powerpoint:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/powerpoint"]
