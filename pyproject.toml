@@ -1,5 +1,5 @@
 [project]
-name = "powerpoint"
+name = "iflow-mcp_powerpoint"
 version = "0.1.0"
 description = "A MCP server project that creates powerpoint presentations"
 readme = "README.md"
