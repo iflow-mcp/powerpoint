@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint MCP Server Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-file-powerpoint"></i> PowerPoint MCP Server</h1>
+            <p>A powerful Model Context Protocol server for creating PowerPoint presentations</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#overview"><i class="fas fa-home"></i> Overview</a></li>
+                <li><a href="#installation"><i class="fas fa-download"></i> Installation</a></li>
+                <li><a href="#tools"><i class="fas fa-tools"></i> Tools</a></li>
+                <li><a href="#examples"><i class="fas fa-code"></i> Examples</a></li>
+                <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="overview">
+            <h2><i class="fas fa-info-circle"></i> MCP Market Introduction</h2>
+            <p>The Model Context Protocol (MCP) is an open standard that enables seamless integration between language models and external tools. This PowerPoint MCP Server implements the protocol to provide powerful presentation creation capabilities directly from your AI assistant.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-sliders-h"></i>
+                    <h3>Flexible Slide Types</h3>
+                    <p>Create various slide layouts including title slides, content slides, comparison slides, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Dynamic Charts</h3>
+                    <p>Automatically generate charts from data with intelligent chart type selection.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-table"></i>
+                    <h3>Data Tables</h3>
+                    <p>Easily add formatted tables to present structured data in your presentations.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-image"></i>
+                    <h3>AI Image Generation</h3>
+                    <p>Generate custom images using AI and include them directly in your slides.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="installation">
+            <h2><i class="fas fa-cogs"></i> Installation and Usage Guide</h2>
+            
+            <h3>Prerequisites</h3>
+            <ul>
+                <li>Python 3.8 or higher</li>
+                <li>UV package manager</li>
+                <li>TogetherAI API key (for image generation)</li>
+            </ul>
+            
+            <h3>Installation Steps</h3>
+            <ol>
+                <li>
+                    <h4>Install UV</h4>
+                    <p>On macOS/Linux:</p>
+                    <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+                    <p>On Windows:</p>
+                    <pre><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+                </li>
+                <li>
+                    <h4>Clone the Repository</h4>
+                    <pre><code>git clone https://github.com/iflow-mcp/powerpoint.git
+cd powerpoint</code></pre>
+                </li>
+                <li>
+                    <h4>Install Dependencies</h4>
+                    <pre><code>uv sync</code></pre>
+                </li>
+            </ol>
+            
+            <h3>Configuration</h3>
+            <p>An environment variable is required for image generation via TogetherAI:</p>
+            <ol>
+                <li>Register for an account at <a href="https://api.together.xyz/settings/api-keys" target="_blank">TogetherAI</a></li>
+                <li>Obtain your API key</li>
+                <li>Set the environment variable:</li>
+            </ol>
+            <pre><code>export TOGETHER_API_KEY="your_api_key_here"</code></pre>
+            
+            <h3>Running the Server</h3>
+            <p>Start the server with:</p>
+            <pre><code>uv run powerpoint --folder-path /path/to/your/presentations</code></pre>
+            
+            <h3>Claude Desktop Integration</h3>
+            <p>To use with Claude Desktop, add the server to your configuration file:</p>
+            <p>On macOS: <code>~/Library/Application\ Support/Claude/claude_desktop_config.json</code></p>
+            <p>On Windows: <code>%APPDATA%/Claude/claude_desktop_config.json</code></p>
+            <pre><code>{
+  "mcpServers": {
+    "powerpoint": {
+      "command": "uv",
+      "env": {
+        "TOGETHER_API_KEY": "your_api_key_here"
+      },
+      "args": [
+        "--directory",
+        "/path/to/powerpoint",
+        "run",
+        "powerpoint",
+        "--folder-path",
+        "/path/to/decks_folder"
+      ]
+    }
+  }
+}</code></pre>
+        </section>
+
+        <section id="tools">
+            <h2><i class="fas fa-toolbox"></i> MCP Tools Detailed Explanation</h2>
+            
+            <div class="tool-card">
+                <h3><code>create-presentation</code></h3>
+                <p>Starts a new presentation with the given name.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>name</strong> (string, required): Name of the presentation (without .pptx extension)</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-title-only</code></h3>
+                <p>Adds a title slide to the presentation.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-section-header</code></h3>
+                <p>Adds a section header slide to the presentation.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>header</strong> (string, required): Section header title</li>
+                    <li><strong>subtitle</strong> (string, optional): Section header subtitle</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-title-content</code></h3>
+                <p>Adds a slide with title and content to the presentation.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                    <li><strong>content</strong> (string, required): Content/body text of the slide</li>
+                </ul>
+                <p>Content formatting: Separate main points with a single carriage return. Make sub-points with tab character. Do not use bullet points, asterisks or dashes for points. Max main points is 4.</p>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-comparison</code></h3>
+                <p>Adds a comparison slide with title and two content sections.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                    <li><strong>left_side_title</strong> (string, required): Title of the left concept</li>
+                    <li><strong>left_side_content</strong> (string, required): Content of the left concept</li>
+                    <li><strong>right_side_title</strong> (string, required): Title of the right concept</li>
+                    <li><strong>right_side_content</strong> (string, required): Content of the right concept</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-title-with-table</code></h3>
+                <p>Adds a slide with title and a table containing the provided data.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                    <li><strong>data</strong> (object, required): Table data with headers and rows</li>
+                </ul>
+                <p>Data structure:</p>
+                <pre><code>{
+  "headers": ["Column 1", "Column 2", "Column 3"],
+  "rows": [
+    ["Row 1 Col 1", "Row 1 Col 2", "Row 1 Col 3"],
+    ["Row 2 Col 1", "Row 2 Col 2", "Row 2 Col 3"]
+  ]
+}</code></pre>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-title-with-chart</code></h3>
+                <p>Adds a slide with title and a chart. The chart type is automatically selected based on the data structure.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                    <li><strong>data</strong> (object, required): Chart data structure</li>
+                </ul>
+                <p>Data structure:</p>
+                <pre><code>{
+  "categories": ["Category 1", "Category 2", "Category 3"],
+  "series": [
+    {
+      "name": "Series 1",
+      "values": [10, 20, 30]
+    },
+    {
+      "name": "Series 2",
+      "values": [15, 25, 35]
+    }
+  ],
+  "x_axis": "X-axis Title",
+  "y_axis": "Y-axis Title"
+}</code></pre>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>add-slide-picture-with-caption</code></h3>
+                <p>Adds a slide with a picture and caption.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation</li>
+                    <li><strong>title</strong> (string, required): Title of the slide</li>
+                    <li><strong>caption</strong> (string, required): Caption text to appear below the picture</li>
+                    <li><strong>image_path</strong> (string, required): Path to the image file to insert</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>open-presentation</code></h3>
+                <p>Opens an existing presentation and saves a copy to a new file for backup.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation to open</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>save-presentation</code></h3>
+                <p>Saves the presentation to a file. Always use this tool at the end of any process that has added slides to a presentation.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>presentation_name</strong> (string, required): Name of the presentation to save</li>
+                </ul>
+            </div>
+            
+            <div class="tool-card">
+                <h3><code>generate-and-save-image</code></h3>
+                <p>Generates an image using a FLUX model and saves it to the specified path.</p>
+                <h4>Parameters:</h4>
+                <ul>
+                    <li><strong>prompt</strong> (string, required): Description of the image to generate</li>
+                    <li><strong>file_name</strong> (string, required): Filename of the image (include .png extension)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2><i class="fas fa-laptop-code"></i> Code Examples and Configuration</h2>
+            
+            <h3>Basic Presentation Creation</h3>
+            <p>Create a simple presentation with a title slide and content slide:</p>
+            <pre><code>// 1. Create a new presentation
+{
+  "name": "my-presentation"
+}
+
+// 2. Add a title slide
+{
+  "presentation_name": "my-presentation",
+  "title": "My Presentation Title"
+}
+
+// 3. Add a content slide
+{
+  "presentation_name": "my-presentation",
+  "title": "Introduction",
+  "content": "This is the first point\n\tThis is a sub-point\nThis is the second point"
+}
+
+// 4. Save the presentation
+{
+  "presentation_name": "my-presentation"
+}</code></pre>
+            
+            <h3>Working with Tables</h3>
+            <p>Add a slide with a table:</p>
+            <pre><code>{
+  "presentation_name": "my-presentation",
+  "title": "Sales Data",
+  "data": {
+    "headers": ["Month", "Revenue", "Expenses"],
+    "rows": [
+      ["January", 10000, 8000],
+      ["February", 12000, 9000],
+      ["March", 15000, 10000]
+    ]
+  }
+}</code></pre>
+            
+            <h3>Creating Charts</h3>
+            <p>Add a slide with a chart:</p>
+            <pre><code>{
+  "presentation_name": "my-presentation",
+  "title": "Quarterly Performance",
+  "data": {
+    "categories": ["Q1", "Q2", "Q3", "Q4"],
+    "series": [
+      {
+        "name": "Revenue",
+        "values": [10000, 12000, 15000, 18000]
+      },
+      {
+        "name": "Expenses",
+        "values": [8000, 9000, 10000, 11000]
+      }
+    ],
+    "x_axis": "Quarter",
+    "y_axis": "Amount ($)"
+  }
+}</code></pre>
+            
+            <h3>Generating Images with AI</h3>
+            <p>Generate and use an AI-created image:</p>
+            <pre><code>// 1. Generate an image
+{
+  "prompt": "A beautiful landscape with mountains and a lake",
+  "file_name": "landscape.png"
+}
+
+// 2. Add a slide with the image
+{
+  "presentation_name": "my-presentation",
+  "title": "Beautiful Landscapes",
+  "caption": "A scenic mountain landscape",
+  "image_path": "landscape.png"
+}</code></pre>
+        </section>
+
+        <section id="faq">
+            <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h3>What is the Model Context Protocol (MCP)?</h3>
+                <p>The Model Context Protocol (MCP) is an open standard that enables seamless integration between language models and external tools. It allows AI assistants to interact with applications and services in a standardized way.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Do I need a TogetherAI account to use this tool?</h3>
+                <p>Only if you want to use the AI image generation feature. If you don't need to generate images, you can use all other features without an API key.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>What file formats are supported for images?</h3>
+                <p>The tool supports common image formats including PNG, JPEG, and GIF. For best results, use high-resolution images.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How do I customize the slide layouts?</h3>
+                <p>The tool uses standard PowerPoint slide layouts. You can modify the presentation after generation using PowerPoint or other presentation software.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Can I work with existing presentations?</h3>
+                <p>Yes, you can use the <code>open-presentation</code> tool to open an existing .pptx file, make modifications, and save it with <code>save-presentation</code>.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>What chart types are supported?</h3>
+                <p>The tool automatically selects the most appropriate chart type based on your data. Supported types include bar charts, line charts, pie charts, and scatter plots.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Where are my presentations saved?</h3>
+                <p>Presentations are saved to the folder specified with the <code>--folder-path</code> argument when starting the server.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>PowerPoint MCP Server © 2025 | Licensed under MIT License</p>
+            <p><a href="https://github.com/iflow-mcp/powerpoint" target="_blank"><i class="fab fa-github"></i> View on GitHub</a></p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
